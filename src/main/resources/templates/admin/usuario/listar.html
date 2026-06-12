@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Usuarios')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('usr')}"></div>
+  <main class="main">
+    <div class="ptitle">
+      <h2>🔑 Usuarios del sistema</h2>
+      <div class="actions"><a href="/admin/usuarios/insertar" class="btn btn-primary">+ Nuevo usuario</a></div>
+    </div>
+
+    <div th:if="${msgOk}" class="alert alert-ok" th:text="${msgOk}"></div>
+    <div th:if="${msgError}" class="alert alert-err" th:text="${msgError}"></div>
+    <div class="alert alert-info">Las cuentas de <b>Administrador</b> y <b>Coordinación</b> son fijas del sistema (🔒): no se crean, editan ni eliminan. Por aquí se gestionan accesos de docentes y estudiantes.</div>
+
+    <div th:if="${#lists.isEmpty(usuarios)}" class="panel in"><div class="empty"><div class="e">🔑</div>No hay usuarios registrados.</div></div>
+
+    <section th:if="${not #lists.isEmpty(usuarios)}" class="panel in">
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead><tr><th>#</th><th>Usuario</th><th>Nombre</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr th:each="u : ${usuarios}">
+              <td th:text="${u.id}"></td>
+              <td th:text="${u.username}"></td>
+              <td th:text="${u.nombre}"></td>
+              <td><span class="bdg bdg-pur" th:text="${u.rol}"></span></td>
+              <td>
+                <span th:if="${u.activo}" class="bdg bdg-green">Activo</span>
+                <span th:unless="${u.activo}" class="bdg bdg-orange">Inactivo</span>
+              </td>
+              <td th:with="sys=${u.rol.name() == 'ADMINISTRADOR' or u.rol.name() == 'COORDINACION'}">
+                <span th:if="${sys}" class="bdg bdg-cyan">🔒 Sistema</span>
+                <th:block th:unless="${sys}">
+                  <a th:href="@{/admin/usuarios/editar/{id}(id=${u.id})}" class="btn-icon warn">✏</a>
+                  <a th:href="@{/admin/usuarios/eliminar/{id}(id=${u.id})}" class="btn-icon dng"
+                     onclick="return confirm('¿Eliminar este usuario?')">🗑</a>
+                </th:block>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

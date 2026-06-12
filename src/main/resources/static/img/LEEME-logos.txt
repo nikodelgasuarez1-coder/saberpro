@@ -1,0 +1,22 @@
+COLOCA AQUÍ LAS 3 IMÁGENES DE LOGO CON ESTOS NOMBRES EXACTOS
+=============================================================
+
+1) saber-badge.png
+   -> La imagen 1: el círculo azul oscuro "PRUEBAS SABER Pro y TyT".
+      (Se usa redondo en: login, sidebar de todos los paneles y la
+       animación de bienvenida del estudiante.)
+
+2) examen-saber-tyt.png
+   -> La imagen 3/4: "Examen SABER TyT" (la T morada).
+      (Se usa en la cabecera de los dashboards y en el pie del login.)
+
+3) saber-tyt.png   (opcional)
+   -> La imagen 2: el logo "Saber TyT" con el ícono de colores.
+
+NOTAS
+- Respeta los nombres y la extensión .png (si tus archivos son .jpg,
+  renómbralos a .png o avísame y cambio la referencia).
+- Si una imagen no está, NO se rompe nada: aparece un respaldo
+  automático (la "S" o un emoji) hasta que la coloques.
+- Después de copiarlas, refresca el navegador (Ctrl+F5). No hace falta
+  recompilar porque son archivos estáticos.

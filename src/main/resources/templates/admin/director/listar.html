@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Directores')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('dir')}"></div>
+  <main class="main">
+    <div class="ptitle">
+      <h2>🎓 Directores</h2>
+      <div class="actions"><a href="/admin/directores/insertar" class="btn btn-primary">+ Nuevo director</a></div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(directores)}" class="panel in"><div class="empty"><div class="e">🎓</div>No hay directores registrados.</div></div>
+
+    <section th:if="${not #lists.isEmpty(directores)}" class="panel in">
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead><tr><th>#</th><th>Nombre</th><th>Documento</th><th>Correo</th><th>Facultad</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr th:each="d : ${directores}">
+              <td th:text="${d.id}"></td>
+              <td th:text="${d.nombreCompleto}"></td>
+              <td th:text="${d.documento}"></td>
+              <td th:text="${d.correo}"></td>
+              <td><span class="bdg bdg-dark" th:text="${d.facultad != null ? d.facultad.nombre : '-'}"></span></td>
+              <td>
+                <a th:href="@{/admin/directores/editar/{id}(id=${d.id})}" class="btn-icon warn">✏</a>
+                <a th:href="@{/admin/directores/eliminar/{id}(id=${d.id})}" class="btn-icon dng"
+                   onclick="return confirm('¿Eliminar este director?')">🗑</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

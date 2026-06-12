@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Facultades')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('fac')}"></div>
+  <main class="main">
+    <div class="ptitle">
+      <h2>🏛️ Facultades</h2>
+      <div class="actions"><a href="/admin/facultades/insertar" class="btn btn-primary">+ Nueva facultad</a></div>
+    </div>
+
+    <div th:if="${msgOk}" class="alert alert-ok" th:text="${msgOk}"></div>
+    <div th:if="${msgError}" class="alert alert-err" th:text="${msgError}"></div>
+
+    <div th:if="${#lists.isEmpty(facultades)}" class="panel in"><div class="empty"><div class="e">🏛️</div>No hay facultades registradas.</div></div>
+
+    <section th:if="${not #lists.isEmpty(facultades)}" class="panel in">
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead><tr><th>#</th><th>Nombre</th><th>Tipo</th><th>Mín. aprobación</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr th:each="f : ${facultades}">
+              <td th:text="${f.id}"></td>
+              <td th:text="${f.nombre}"></td>
+              <td><span class="bdg bdg-pur" th:text="${f.tipo.descripcion}"></span></td>
+              <td><span class="bdg bdg-dark" th:text="'≥ ' + ${f.puntajeMinimoAprobacion}"></span></td>
+              <td>
+                <a th:href="@{/admin/facultades/editar/{id}(id=${f.id})}" class="btn-icon warn">✏</a>
+                <a th:href="@{/admin/facultades/eliminar/{id}(id=${f.id})}" class="btn-icon dng"
+                   onclick="return confirm('¿Eliminar esta facultad?')">🗑</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Usuario')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('usr')}"></div>
+  <main class="main">
+    <div class="ptitle"><h2>🔑 Usuario</h2></div>
+
+    <section class="panel in" style="max-width:720px">
+      <form th:action="@{/admin/usuarios/guardar}" th:object="${usuario}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <div class="fgrid">
+          <div class="field">
+            <label>Usuario (login)</label>
+            <input type="text" th:field="*{username}" class="ctrl" th:classappend="${#fields.hasErrors('username')}?'bad'"/>
+            <div class="err-msg" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+          </div>
+          <div class="field">
+            <label>Contraseña</label>
+            <input type="text" th:field="*{password}" class="ctrl" th:classappend="${#fields.hasErrors('password')}?'bad'"/>
+            <div class="err-msg" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+          </div>
+          <div class="field ffull">
+            <label>Nombre completo</label>
+            <input type="text" th:field="*{nombre}" class="ctrl" th:classappend="${#fields.hasErrors('nombre')}?'bad'"/>
+            <div class="err-msg" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+          </div>
+          <div class="field">
+            <label>Rol</label>
+            <select th:field="*{rol}" class="ctrl" th:classappend="${#fields.hasErrors('rol')}?'bad'">
+              <option value="">-- Seleccione --</option>
+              <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"></option>
+            </select>
+            <div class="err-msg" th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}"></div>
+          </div>
+          <div class="field">
+            <label>Docente vinculado (solo rol DOCENTE)</label>
+            <select th:field="*{docente}" class="ctrl">
+              <option value="">-- Ninguno --</option>
+              <option th:each="d : ${docentes}" th:value="${d.id}" th:text="${d.nombreCompleto}"></option>
+            </select>
+          </div>
+          <div class="field ffull">
+            <label class="check"><input type="checkbox" th:field="*{activo}"/> Usuario activo</label>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:22px">
+          <button type="submit" class="btn btn-primary">💾 Guardar</button>
+          <a href="/admin/usuarios/listar" class="btn btn-ghost">Cancelar</a>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

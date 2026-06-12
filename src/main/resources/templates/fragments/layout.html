@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(titulo)">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title th:text="${titulo} + ' — Saber Pro'">Saber Pro</title>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <style>
+    .estado-anulado   { background-color:#e2e3e5 !important; color:#6c757d; }
+    .estado-noalcanzo { background-color:#fff3cd !important; }
+    .estado-aprobado  { background-color:#d1e7dd !important; }
+    .badge-anulado   { background-color:#6c757d; }
+    .badge-noalcanzo { background-color:#fd7e14; }
+    .badge-aprobado  { background-color:#198754; }
+  </style>
+</head>
+
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">🎓 Saber Pro</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav me-auto">
+
+        <!-- ADMINISTRADOR -->
+        <th:block th:if="${session.usuario != null and session.usuario.rol.name() == 'ADMINISTRADOR'}">
+          <li class="nav-item"><a class="nav-link" href="/admin">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/facultades/listar">Facultades</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/directores/listar">Directores</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/docentes/listar">Docentes</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/beneficios/listar">Beneficios</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/usuarios/listar">Usuarios</a></li>
+        </th:block>
+
+        <!-- COORDINACION -->
+        <th:block th:if="${session.usuario != null and session.usuario.rol.name() == 'COORDINACION'}">
+          <li class="nav-item"><a class="nav-link" href="/coordinacion">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="/coordinacion/estudiantes/listar">Estudiantes</a></li>
+          <li class="nav-item"><a class="nav-link" href="/coordinacion/aprobar">Aprobar Saber Pro</a></li>
+          <li class="nav-item"><a class="nav-link" href="/coordinacion/resultados/importar">Importar Excel</a></li>
+          <li class="nav-item"><a class="nav-link" href="/coordinacion/informe/beneficios">Informe Beneficios</a></li>
+        </th:block>
+
+        <!-- DOCENTE -->
+        <th:block th:if="${session.usuario != null and session.usuario.rol.name() == 'DOCENTE'}">
+          <li class="nav-item"><a class="nav-link" href="/docente">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="/docente/facultad">Por Facultad</a></li>
+          <li class="nav-item"><a class="nav-link" href="/docente/buscar">Por Cédula</a></li>
+          <li class="nav-item"><a class="nav-link" href="/docente/informe/beneficios">Informe Beneficios</a></li>
+        </th:block>
+
+        <!-- ESTUDIANTE -->
+        <th:block th:if="${session.usuario != null and session.usuario.rol.name() == 'ESTUDIANTE'}">
+          <li class="nav-item"><a class="nav-link" href="/estudiante">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="/estudiante/pago">Pago Saber Pro</a></li>
+          <li class="nav-item"><a class="nav-link" href="/estudiante/resultado">Mi Resultado</a></li>
+        </th:block>
+
+      </ul>
+
+      <span class="navbar-text text-white me-3" th:if="${session.usuario != null}">
+        👤 <span th:text="${session.usuario.nombre}">Usuario</span>
+        <span class="badge bg-light text-dark ms-1" th:text="${session.usuario.rol}">ROL</span>
+      </span>
+      <a href="/logout" class="btn btn-outline-light btn-sm">Cerrar sesión</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== SCRIPTS ===================== -->
+<th:block th:fragment="scripts">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</th:block>
+
+</body>
+</html>

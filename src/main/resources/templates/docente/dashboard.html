@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Panel Docente')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('home')}"></div>
+
+  <main class="main">
+    <div class="header">
+      <div>
+        <div class="eyebrow">Consulta académica · Saber Pro</div>
+        <h1 class="hi">Estación del docente
+          <small>Seguimiento de resultados por facultad y estudiante</small>
+        </h1>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div class="logochip"><img src="/img/examen-saber-tyt.png" alt="Examen Saber TyT" onerror="this.parentElement.remove()"/></div>
+        <div class="who">
+          <div class="av">👨‍🏫</div>
+          <div>
+            <b th:text="${session.usuario.nombre}">Docente</b>
+            <span>Docente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <section class="panel span6"><div class="ph"><span class="dot"></span>Estudiantes</div>
+        <div class="stat"><div class="ic c-cyan">👥</div><div class="n c-cyan" th:attr="data-count=${totalEstudiantes}">0</div>
+          <div class="l">Estudiantes en el sistema</div></div></section>
+
+      <section class="panel span6"><div class="ph"><span class="dot"></span>Facultades</div>
+        <div class="stat"><div class="ic c-pur">🏛️</div><div class="n c-pur" th:attr="data-count=${totalFacultades}">0</div>
+          <div class="l">Programas disponibles</div></div></section>
+
+      <section class="panel span4"><div class="ph"><span class="dot"></span>Por facultad</div>
+        <div class="launch"><div class="ic">🏛️</div><div>
+          <h4>Consulta por facultad</h4><p>Lista de estudiantes y resultados de una facultad.</p>
+          <a href="/docente/facultad" class="btn btn-primary" style="margin-top:12px">Consultar →</a>
+        </div></div></section>
+
+      <section class="panel span4"><div class="ph"><span class="dot"></span>Por cédula</div>
+        <div class="launch"><div class="ic">🔍</div><div>
+          <h4>Buscar por documento</h4><p>Encuentra el resultado de un estudiante por cédula o registro.</p>
+          <a href="/docente/buscar" class="btn btn-primary" style="margin-top:12px">Buscar →</a>
+        </div></div></section>
+
+      <section class="panel span4"><div class="ph"><span class="dot"></span>Beneficios</div>
+        <div class="launch"><div class="ic">🎁</div><div>
+          <h4>Informe de beneficios</h4><p>Estímulos obtenidos por los estudiantes según la resolución.</p>
+          <a href="/docente/informe/beneficios" class="btn btn-warn" style="margin-top:12px">Ver informe →</a>
+        </div></div></section>
+    </div>
+  </main>
+</div>
+
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

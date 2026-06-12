@@ -1,0 +1,23 @@
+# Maven
+target/
+
+# Archivos subidos (recibos de pago)
+uploads/
+
+# Eclipse / STS
+.settings/
+.classpath
+.project
+.springBeans
+bin/
+
+# IntelliJ
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Logs y sistema
+*.log
+.DS_Store

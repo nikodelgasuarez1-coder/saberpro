@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Docentes')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('doc')}"></div>
+  <main class="main">
+    <div class="ptitle">
+      <h2>👨‍🏫 Docentes</h2>
+      <div class="actions"><a href="/admin/docentes/insertar" class="btn btn-primary">+ Nuevo docente</a></div>
+    </div>
+
+    <div th:if="${msgOk}" class="alert alert-ok" th:text="${msgOk}"></div>
+    <div th:if="${msgError}" class="alert alert-err" th:text="${msgError}"></div>
+
+    <div th:if="${#lists.isEmpty(docentes)}" class="panel in"><div class="empty"><div class="e">👨‍🏫</div>No hay docentes registrados.</div></div>
+
+    <section th:if="${not #lists.isEmpty(docentes)}" class="panel in">
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead><tr><th>#</th><th>Nombre</th><th>Documento</th><th>Correo</th><th>Facultad</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr th:each="d : ${docentes}">
+              <td th:text="${d.id}"></td>
+              <td th:text="${d.nombreCompleto}"></td>
+              <td th:text="${d.documento}"></td>
+              <td th:text="${d.correo}"></td>
+              <td><span class="bdg bdg-dark" th:text="${d.facultad != null ? d.facultad.nombre : '-'}"></span></td>
+              <td style="white-space:nowrap">
+                <a th:href="@{/admin/docentes/acceso/{id}(id=${d.id})}" class="btn-icon" title="Generar acceso">🔑</a>
+                <a th:href="@{/admin/docentes/editar/{id}(id=${d.id})}" class="btn-icon warn">✏</a>
+                <a th:href="@{/admin/docentes/eliminar/{id}(id=${d.id})}" class="btn-icon dng"
+                   onclick="return confirm('¿Eliminar este docente?')">🗑</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

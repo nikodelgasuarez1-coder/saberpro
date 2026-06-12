@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Mi Perfil')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('perfil')}"></div>
+  <main class="main">
+    <div class="ptitle"><h2>👤 Mi Perfil</h2></div>
+
+    <div th:if="${msgOk}" class="alert alert-ok" th:text="${msgOk}"></div>
+    <div th:if="${estudiante == null}" class="alert alert-err">Tu usuario no está vinculado a una ficha de estudiante.</div>
+
+    <section th:if="${estudiante != null}" class="panel in" style="max-width:760px">
+      <div class="alert alert-info">Puedes actualizar tus nombres, correo y teléfono. Tu <b>documento</b> y <b>registro ICFES</b> son únicos y no se pueden cambiar.</div>
+
+      <form th:action="@{/estudiante/perfil}" method="post">
+        <div class="fgrid">
+          <!-- Campos NO editables -->
+          <div class="field">
+            <label>Tipo / N° documento 🔒</label>
+            <input type="text" class="ctrl" disabled
+                   th:value="${estudiante.tipoDocumento} + ' ' + (${estudiante.numeroDocumento} ?: '—')"/>
+          </div>
+          <div class="field">
+            <label>N° registro ICFES 🔒</label>
+            <input type="text" class="ctrl" disabled th:value="${estudiante.numeroRegistro} ?: '—'"/>
+          </div>
+
+          <!-- Editables -->
+          <div class="field">
+            <label>Primer nombre</label>
+            <input type="text" name="primerNombre" class="ctrl" th:value="${estudiante.primerNombre}" required/>
+          </div>
+          <div class="field">
+            <label>Segundo nombre</label>
+            <input type="text" name="segundoNombre" class="ctrl" th:value="${estudiante.segundoNombre}"/>
+          </div>
+          <div class="field">
+            <label>Primer apellido</label>
+            <input type="text" name="primerApellido" class="ctrl" th:value="${estudiante.primerApellido}" required/>
+          </div>
+          <div class="field">
+            <label>Segundo apellido</label>
+            <input type="text" name="segundoApellido" class="ctrl" th:value="${estudiante.segundoApellido}"/>
+          </div>
+          <div class="field">
+            <label>Correo electrónico</label>
+            <input type="email" name="correo" class="ctrl" th:value="${estudiante.correo}"/>
+          </div>
+          <div class="field">
+            <label>Teléfono</label>
+            <input type="text" name="telefono" class="ctrl" th:value="${estudiante.telefono}"/>
+          </div>
+
+          <div class="field ffull">
+            <label>Facultad / programa 🔒</label>
+            <input type="text" class="ctrl" disabled
+                   th:value="${estudiante.facultad != null ? estudiante.facultad.nombre : '—'}"/>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:22px">
+          <button type="submit" class="btn btn-primary">💾 Guardar cambios</button>
+          <a href="/estudiante" class="btn btn-ghost">Volver</a>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Informe de Beneficios')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('ben')}"></div>
+  <main class="main">
+    <div class="ptitle">
+      <h2>🏆 Informe de Beneficios</h2>
+      <div class="actions" th:if="${session.usuario.rol.name() == 'COORDINACION'}">
+        <a href="/coordinacion/resultados/exportar" class="btn btn-ghost">⬇ Exportar a Excel</a>
+      </div>
+    </div>
+    <div class="alert alert-info">Estudiantes con exoneración de trabajo de grado y becas — Saber Pro / Saber TyT (Acuerdo 01-009).</div>
+
+    <div th:if="${resumenes == null or #lists.isEmpty(resumenes)}" class="panel in"><div class="empty"><div class="e">🏆</div>No hay estudiantes registrados.</div></div>
+
+    <section th:if="${resumenes != null and not #lists.isEmpty(resumenes)}" class="panel in">
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead><tr><th>#</th><th>Documento</th><th>Nombre completo</th><th>Programa</th><th>Puntaje</th><th>Nivel</th><th>Beneficio</th></tr></thead>
+          <tbody>
+            <tr th:each="res,it : ${resumenes}" th:with="e=${res.estudiante}, r=${res.estudiante.resultado}"
+                th:classappend="${res.tieneBeneficio} ? 'row-aprobado' : ''">
+              <td th:text="${it.index + 1}">1</td>
+              <td th:text="${e.numeroDocumento ?: e.numeroRegistro}"></td>
+              <td th:text="${e.nombreCompleto}"></td>
+              <td th:text="${e.facultad != null ? e.facultad.nombre : '-'}"></td>
+              <td>
+                <b th:if="${r != null and !r.anulado}" th:text="${r.puntajeGlobal}"></b>
+                <span th:if="${r != null and r.anulado}" class="bdg bdg-gray">ANULADO</span>
+                <span th:if="${r == null}" style="color:var(--muted)">—</span>
+              </td>
+              <td><span th:if="${r != null and !r.anulado}" class="bdg bdg-pur" th:text="${r.nivelDesempeno}"></span></td>
+              <td>
+                <span th:if="${res.tieneBeneficio}" class="bdg bdg-green" th:text="${res.principal.nombre}"></span>
+                <span th:if="${not res.tieneBeneficio and res.siguiente != null}" class="bdg bdg-orange"
+                      th:text="'Faltan ' + ${res.faltan} + ' pts'"></span>
+                <span th:if="${not res.tieneBeneficio and res.siguiente == null}" style="color:var(--muted)">—</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

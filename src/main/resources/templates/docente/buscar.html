@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Buscar por Cédula')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('ced')}"></div>
+  <main class="main">
+    <div class="ptitle"><h2>🔍 Buscar estudiante</h2></div>
+
+    <section class="panel in" style="margin-bottom:20px">
+      <form method="get" action="/docente/buscar" style="display:flex;gap:12px;flex-wrap:wrap;align-items:end">
+        <div class="field" style="flex:1;min-width:240px;margin:0">
+          <label>Documento o registro ICFES</label>
+          <input type="text" name="documento" class="ctrl" th:value="${buscado}" placeholder="Ej. EK20183007722" required/>
+        </div>
+        <button class="btn btn-primary">Buscar</button>
+      </form>
+    </section>
+
+    <div th:if="${buscado != null and estudiante == null}" class="alert alert-err">
+      No se encontró ningún estudiante con "<span th:text="${buscado}"></span>".
+    </div>
+
+    <div th:replace="~{resultado/fragmento :: detalle(${estudiante}, ${resumen})}"></div>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

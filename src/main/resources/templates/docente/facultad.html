@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Consulta por Facultad')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('fac')}"></div>
+  <main class="main">
+    <div class="ptitle"><h2>🏛️ Consulta por Facultad</h2></div>
+
+    <section class="panel in" style="margin-bottom:20px">
+      <form method="get" action="/docente/facultad" style="display:flex;gap:12px;flex-wrap:wrap;align-items:end">
+        <div class="field" style="flex:1;min-width:240px;margin:0">
+          <label>Facultad</label>
+          <select name="facultadId" class="ctrl" onchange="this.form.submit()">
+            <option value="">-- Seleccione una facultad --</option>
+            <option th:each="f : ${facultades}" th:value="${f.id}"
+                    th:text="${f.nombre} + ' (' + ${conteo.get(f.id)} + ' estudiantes)'"
+                    th:selected="${facultadId != null and facultadId == f.id}"></option>
+          </select>
+          <div class="hint">El número entre paréntesis es la cantidad de estudiantes en esa facultad.</div>
+        </div>
+        <button class="btn btn-primary">Buscar</button>
+      </form>
+    </section>
+
+    <div th:if="${estudiantes != null and #lists.isEmpty(estudiantes)}" class="panel in"><div class="empty"><div class="e">🗂️</div>No hay estudiantes en esta facultad.</div></div>
+
+    <section th:if="${estudiantes != null and not #lists.isEmpty(estudiantes)}" class="panel in">
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead><tr><th>Registro</th><th>Estudiante</th><th>Puntaje</th><th>Estado</th><th></th></tr></thead>
+          <tbody>
+            <tr th:each="e : ${estudiantes}" th:with="r=${e.resultado}"
+                th:classappend="${r != null and r.anulado} ? 'row-anulado' :
+                                (${r != null and r.estado == 'NO_ALCANZO'} ? 'row-noalcanzo' :
+                                (${r != null and r.estado == 'APROBADO'} ? 'row-aprobado' : ''))">
+              <td th:text="${e.numeroRegistro}"></td>
+              <td th:text="${e.nombreCompleto}"></td>
+              <td><b th:text="${r != null and !r.anulado ? r.puntajeGlobal : '—'}"></b></td>
+              <td>
+                <span th:if="${r == null}" class="bdg bdg-dark">Sin resultado</span>
+                <span th:if="${r != null and r.anulado}" class="bdg bdg-gray">ANULADO</span>
+                <span th:if="${r != null and r.estado == 'NO_ALCANZO'}" class="bdg bdg-orange">No alcanzó</span>
+                <span th:if="${r != null and r.estado == 'APROBADO'}" class="bdg bdg-green">Aprobado</span>
+              </td>
+              <td><a th:href="@{/docente/buscar(documento=${e.numeroRegistro})}" class="btn-icon">👁 Ver</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

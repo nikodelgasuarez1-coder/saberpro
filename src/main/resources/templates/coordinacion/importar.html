@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Importar Excel')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('imp')}"></div>
+  <main class="main">
+    <div class="ptitle"><h2>📥 Importar resultados desde Excel</h2></div>
+
+    <section class="panel in" style="max-width:680px">
+      <div th:if="${msgError}" class="alert alert-err" th:text="${msgError}"></div>
+
+      <div class="alert alert-info">
+        Sube el archivo Excel del ICFES (<b>.xlsx</b>). El sistema lee cada estudiante por su Número de registro
+        y carga sus puntajes y niveles. Los marcados como <b>ANULADO</b> se guardan sin puntajes.
+      </div>
+
+      <form th:action="@{/coordinacion/resultados/importar}" method="post" enctype="multipart/form-data">
+        <div class="field" style="margin-bottom:18px">
+          <label>Facultad / programa de estos estudiantes</label>
+          <select name="facultadId" class="ctrl" required>
+            <option value="">-- Seleccione --</option>
+            <option th:each="f : ${facultades}" th:value="${f.id}"
+                    th:text="${f.nombre} + ' (' + ${f.tipo.descripcion} + ')'"></option>
+          </select>
+          <div class="hint">Define el umbral de aprobación (90 tecnología / 120 profesional).</div>
+        </div>
+        <div class="field" style="margin-bottom:18px">
+          <label>Archivo Excel</label>
+          <input type="file" name="archivo" class="ctrl" accept=".xlsx" required/>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button type="submit" class="btn btn-primary">⬆ Importar</button>
+          <a href="/coordinacion/estudiantes/listar" class="btn btn-ghost">Cancelar</a>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

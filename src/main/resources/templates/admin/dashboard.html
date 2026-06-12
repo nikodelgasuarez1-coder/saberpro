@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Panel Administrador')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('home')}"></div>
+
+  <main class="main">
+    <div class="header">
+      <div>
+        <div class="eyebrow">Núcleo de administración · Saber Pro</div>
+        <h1 class="hi">Centro de mando
+          <small>Control total del sistema institucional</small>
+        </h1>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div class="logochip"><img src="/img/examen-saber-tyt.png" alt="Examen Saber TyT" onerror="this.parentElement.remove()"/></div>
+        <div class="who">
+          <div class="av">🛡️</div>
+          <div>
+            <b th:text="${session.usuario.nombre}">Admin</b>
+            <span>Administrador</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <section class="panel span3"><div class="ph"><span class="dot"></span>Facultades</div>
+        <div class="stat"><div class="ic c-cyan">🏛️</div><div class="n c-cyan" th:attr="data-count=${totalFacultades}">0</div>
+          <div class="l">Programas registrados</div></div>
+        <a href="/admin/facultades/listar" style="position:absolute;inset:0"></a></section>
+
+      <section class="panel span3"><div class="ph"><span class="dot"></span>Directores</div>
+        <div class="stat"><div class="ic c-green">🎓</div><div class="n c-green" th:attr="data-count=${totalDirectores}">0</div>
+          <div class="l">Directores de programa</div></div>
+        <a href="/admin/directores/listar" style="position:absolute;inset:0"></a></section>
+
+      <section class="panel span3"><div class="ph"><span class="dot"></span>Docentes</div>
+        <div class="stat"><div class="ic c-blue">👨‍🏫</div><div class="n c-blue" th:attr="data-count=${totalDocentes}">0</div>
+          <div class="l">Docentes activos</div></div>
+        <a href="/admin/docentes/listar" style="position:absolute;inset:0"></a></section>
+
+      <section class="panel span3"><div class="ph"><span class="dot"></span>Usuarios</div>
+        <div class="stat"><div class="ic c-pur">🔑</div><div class="n c-pur" th:attr="data-count=${totalUsuarios}">0</div>
+          <div class="l">Accesos del sistema</div></div>
+        <a href="/admin/usuarios/listar" style="position:absolute;inset:0"></a></section>
+
+      <!-- Módulos -->
+      <section class="panel span4"><div class="ph"><span class="dot"></span>Facultades</div>
+        <div class="launch"><div class="ic">🏛️</div><div>
+          <h4>Gestionar facultades</h4><p>Crea programas de Tecnología (≥90) o Profesional (≥120).</p>
+          <a href="/admin/facultades/listar" class="btn btn-primary" style="margin-top:12px">Abrir módulo →</a>
+        </div></div></section>
+
+      <section class="panel span4"><div class="ph"><span class="dot"></span>Talento humano</div>
+        <div class="launch"><div class="ic">👥</div><div>
+          <h4>Directores y docentes</h4><p>Administra el personal académico de cada facultad.</p>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <a href="/admin/directores/listar" class="btn btn-ghost">Directores</a>
+            <a href="/admin/docentes/listar" class="btn btn-ghost">Docentes</a>
+          </div>
+        </div></div></section>
+
+      <section class="panel span4"><div class="ph"><span class="dot"></span>Resolución</div>
+        <div class="launch"><div class="ic">🎁</div><div>
+          <h4>Beneficios e incentivos</h4><p><b th:text="${totalBeneficios}">0</b> beneficios cargados (Acuerdo 01-009).</p>
+          <a href="/admin/beneficios/listar" class="btn btn-warn" style="margin-top:12px">Ver resolución →</a>
+        </div></div></section>
+    </div>
+  </main>
+</div>
+
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

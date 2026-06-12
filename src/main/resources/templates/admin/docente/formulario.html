@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Docente')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('doc')}"></div>
+  <main class="main">
+    <div class="ptitle"><h2>👨‍🏫 Docente</h2></div>
+
+    <section class="panel in" style="max-width:720px">
+      <form th:action="@{/admin/docentes/guardar}" th:object="${docente}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <div class="fgrid">
+          <div class="field">
+            <label>Nombres</label>
+            <input type="text" th:field="*{nombres}" class="ctrl" th:classappend="${#fields.hasErrors('nombres')}?'bad'"/>
+            <div class="err-msg" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></div>
+          </div>
+          <div class="field">
+            <label>Apellidos</label>
+            <input type="text" th:field="*{apellidos}" class="ctrl" th:classappend="${#fields.hasErrors('apellidos')}?'bad'"/>
+            <div class="err-msg" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></div>
+          </div>
+          <div class="field">
+            <label>Documento</label>
+            <input type="text" th:field="*{documento}" class="ctrl" th:classappend="${#fields.hasErrors('documento')}?'bad'"/>
+            <div class="err-msg" th:if="${#fields.hasErrors('documento')}" th:errors="*{documento}"></div>
+          </div>
+          <div class="field">
+            <label>Teléfono</label>
+            <input type="text" th:field="*{telefono}" class="ctrl"/>
+          </div>
+          <div class="field ffull">
+            <label>Correo</label>
+            <input type="email" th:field="*{correo}" class="ctrl" th:classappend="${#fields.hasErrors('correo')}?'bad'"/>
+            <div class="err-msg" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></div>
+          </div>
+          <div class="field ffull">
+            <label>Facultad</label>
+            <select th:field="*{facultad}" class="ctrl">
+              <option value="">-- Seleccione --</option>
+              <option th:each="f : ${facultades}" th:value="${f.id}" th:text="${f.nombre}"></option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:22px">
+          <button type="submit" class="btn btn-primary">💾 Guardar</button>
+          <a href="/admin/docentes/listar" class="btn btn-ghost">Cancelar</a>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

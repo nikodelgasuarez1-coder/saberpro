@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Resolución de Beneficios')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('ben')}"></div>
+  <main class="main">
+    <div class="ptitle"><h2>🎁 Resolución de Beneficios</h2></div>
+
+    <div class="alert alert-info">
+      Estímulos del <b>Acuerdo 01-009 (22/04/2024)</b>. Son <b>fijos</b>: no se crean, editan ni eliminan.
+      Se otorgan automáticamente a cada estudiante según su tipo de programa y su puntaje global.
+    </div>
+
+    <div class="grid">
+      <!-- Tecnología -->
+      <section class="panel in span6">
+        <div class="ph"><span class="dot"></span>Tecnología (Saber T&amp;T) · aprueba con ≥ 90</div>
+        <div class="ctable-wrap">
+          <table class="ctable">
+            <thead><tr><th>Rango</th><th>Beneficio</th></tr></thead>
+            <tbody>
+              <tr th:each="b : ${tecnologia}">
+                <td><span class="bdg bdg-cyan" th:text="${b.puntajeMinimo} + ' – ' + ${b.puntajeMaximo}"></span></td>
+                <td><b th:text="${b.nombre}"></b>
+                  <div style="color:var(--muted);font-size:13px" th:text="${b.descripcion}"></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Profesional -->
+      <section class="panel in span6">
+        <div class="ph"><span class="dot"></span>Profesional / Ingeniería (Saber Pro) · aprueba con ≥ 120</div>
+        <div class="ctable-wrap">
+          <table class="ctable">
+            <thead><tr><th>Rango</th><th>Beneficio</th></tr></thead>
+            <tbody>
+              <tr th:each="b : ${profesional}">
+                <td><span class="bdg bdg-pur" th:text="${b.puntajeMinimo} + ' – ' + ${b.puntajeMaximo}"></span></td>
+                <td><b th:text="${b.nombre}"></b>
+                  <div style="color:var(--muted);font-size:13px" th:text="${b.descripcion}"></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

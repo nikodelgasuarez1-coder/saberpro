@@ -1,0 +1,16 @@
+# Blueprint de Render para desplegar el sistema Saber Pro.
+# La base de datos MySQL es externa (MySQL online: Railway, Clever Cloud, etc.):
+# las credenciales se cargan como variables de entorno en el panel de Render.
+services:
+  - type: web
+    name: saberpro
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DB_URL
+        sync: false   # jdbc:mysql://HOST:PUERTO/saberpro?useSSL=false&serverTimezone=America/Bogota
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false

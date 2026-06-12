@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Resultado')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('est')}"></div>
+  <main class="main">
+    <div class="ptitle">
+      <h2>📊 Resultado Saber Pro</h2>
+      <div class="actions"><a href="javascript:history.back()" class="btn btn-ghost">← Volver</a></div>
+    </div>
+
+    <div th:if="${estudiante == null}" class="alert alert-err">Estudiante no encontrado.</div>
+    <div th:replace="~{resultado/fragmento :: detalle(${estudiante}, ${resumen})}"></div>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

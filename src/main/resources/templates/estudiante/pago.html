@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Pago Saber Pro')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('pago')}"></div>
+  <main class="main">
+    <div class="ptitle"><h2>💳 Pago Saber Pro</h2></div>
+
+    <div th:if="${msgOk}" class="alert alert-ok" th:text="${msgOk}"></div>
+    <div th:if="${msgError}" class="alert alert-err" th:text="${msgError}"></div>
+
+    <div th:if="${estudiante == null}" class="alert alert-err">Tu usuario no está vinculado a una ficha de estudiante.</div>
+
+    <div th:if="${estudiante != null}" style="max-width:640px">
+      <section th:if="${pago != null}" class="panel in" style="margin-bottom:20px">
+        <div class="ph"><span class="dot"></span>Recibo actual</div>
+        <p style="margin-bottom:8px">Archivo:
+          <a class="lnk" th:href="@{'/uploads/' + ${pago.archivo}}" target="_blank" th:text="${pago.nombreOriginal}">recibo</a></p>
+        <p>Estado:
+          <span th:if="${pago.estado.name() == 'PENDIENTE'}" class="bdg bdg-orange">PENDIENTE</span>
+          <span th:if="${pago.estado.name() == 'APROBADO'}" class="bdg bdg-green">APROBADO ✓</span>
+          <span th:if="${pago.estado.name() == 'RECHAZADO'}" class="bdg bdg-orange">RECHAZADO</span>
+        </p>
+      </section>
+
+      <section class="panel in">
+        <div class="ph"><span class="dot"></span>Subir recibo de pago</div>
+        <form th:action="@{/estudiante/pago}" method="post" enctype="multipart/form-data">
+          <div class="field" style="margin-bottom:18px">
+            <label>Comprobante (PDF o imagen)</label>
+            <input type="file" name="archivo" class="ctrl" accept=".pdf,.jpg,.jpeg,.png" required/>
+          </div>
+          <button type="submit" class="btn btn-primary">⬆ Subir recibo</button>
+        </form>
+      </section>
+    </div>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

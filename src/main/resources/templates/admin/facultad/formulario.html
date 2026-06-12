@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Facultad')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('fac')}"></div>
+  <main class="main">
+    <div class="ptitle"><h2>🏛️ Facultad</h2></div>
+
+    <section class="panel in" style="max-width:640px">
+      <form th:action="@{/admin/facultades/guardar}" th:object="${facultad}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <div class="fgrid">
+          <div class="field ffull">
+            <label>Nombre</label>
+            <input type="text" th:field="*{nombre}" class="ctrl" th:classappend="${#fields.hasErrors('nombre')}?'bad'"/>
+            <div class="err-msg" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+          </div>
+          <div class="field ffull">
+            <label>Tipo de programa</label>
+            <select th:field="*{tipo}" class="ctrl" th:classappend="${#fields.hasErrors('tipo')}?'bad'">
+              <option value="">-- Seleccione --</option>
+              <option th:each="t : ${tipos}" th:value="${t}" th:text="${t.descripcion}"></option>
+            </select>
+            <div class="err-msg" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></div>
+            <div class="hint">Tecnología aprueba con ≥90, Profesional/Ingeniería con ≥120.</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:22px">
+          <button type="submit" class="btn btn-primary">💾 Guardar</button>
+          <a href="/admin/facultades/listar" class="btn btn-ghost">Cancelar</a>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

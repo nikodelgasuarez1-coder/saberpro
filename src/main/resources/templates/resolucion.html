@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Resolución de Beneficios')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('ben')}"></div>
+  <main class="main">
+    <div class="ptitle">
+      <h2>📜 Resolución de Beneficios</h2>
+      <div class="actions"><a href="javascript:history.back()" class="btn btn-ghost">← Volver</a></div>
+    </div>
+
+    <section class="panel in" style="margin-bottom:20px">
+      <div class="ph"><span class="dot"></span>Acuerdo No. 01-009 · Consejo Directivo (22/04/2024) · UTS</div>
+      <p style="color:var(--muted);line-height:1.6">
+        Estímulos para estudiantes con resultados sobresalientes en las pruebas <b>Saber Pro</b> y <b>Saber T&amp;T</b>.
+        Los estímulos van acordes con el puntaje global, clasificados por rangos. La vigencia de las becas es de
+        <b>un (1) año</b> a partir de la divulgación oficial de los resultados por parte del ICFES.
+      </p>
+    </section>
+
+    <!-- TECNOLOGÍA -->
+    <section class="panel in" style="margin-bottom:20px">
+      <div class="ph"><span class="dot"></span>🔧 Tecnología (Saber T&amp;T) · Seminario de Grado II</div>
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead><tr><th>Rango de puntaje</th><th>Nota de grado</th><th>Beca derecho de grado</th><th>Estímulo</th></tr></thead>
+          <tbody>
+            <tr th:each="b : ${tecnologia}">
+              <td><span class="bdg bdg-cyan" th:text="${b.puntajeMinimo} + ' – ' + ${b.puntajeMaximo}"></span></td>
+              <td><b style="color:#3effc0" th:text="${b.notaGrado}"></b></td>
+              <td><b th:text="${b.becaPorcentaje} + '%'"></b></td>
+              <td style="color:var(--muted);font-size:14px" th:text="${b.descripcion}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PROFESIONAL -->
+    <section class="panel in">
+      <div class="ph"><span class="dot"></span>🎓 Profesional / Ingeniería (Saber Pro) · Seminario de Grado IV</div>
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead><tr><th>Rango de puntaje</th><th>Nota de grado</th><th>Beca derecho de grado</th><th>Estímulo</th></tr></thead>
+          <tbody>
+            <tr th:each="b : ${profesional}">
+              <td><span class="bdg bdg-pur" th:text="${b.puntajeMinimo} + ' – ' + ${b.puntajeMaximo}"></span></td>
+              <td><b style="color:#3effc0" th:text="${b.notaGrado}"></b></td>
+              <td><b th:text="${b.becaPorcentaje} + '%'"></b></td>
+              <td style="color:var(--muted);font-size:14px" th:text="${b.descripcion}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

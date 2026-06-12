@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Aprobar Saber Pro')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('apr')}"></div>
+  <main class="main">
+    <div class="ptitle"><h2>✅ Aprobar estudiantes para Saber Pro</h2></div>
+    <div class="alert alert-info">Marca qué estudiantes cumplen los requisitos y quedan habilitados para presentar el examen.</div>
+
+    <div th:if="${#lists.isEmpty(estudiantes)}" class="panel in"><div class="empty"><div class="e">✅</div>No hay estudiantes registrados.</div></div>
+
+    <section th:if="${not #lists.isEmpty(estudiantes)}" class="panel in">
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead><tr><th>Registro</th><th>Estudiante</th><th>Facultad</th><th>Estado</th><th>Acción</th></tr></thead>
+          <tbody>
+            <tr th:each="e : ${estudiantes}">
+              <td th:text="${e.numeroRegistro}"></td>
+              <td th:text="${e.nombreCompleto}"></td>
+              <td th:text="${e.facultad != null ? e.facultad.nombre : '-'}"></td>
+              <td>
+                <span th:if="${e.aprobadoSaberPro}" class="bdg bdg-green">Aprobado</span>
+                <span th:unless="${e.aprobadoSaberPro}" class="bdg bdg-dark">Pendiente</span>
+              </td>
+              <td>
+                <a th:href="@{/coordinacion/aprobar/{id}(id=${e.id})}"
+                   th:class="${e.aprobadoSaberPro} ? 'btn btn-danger btn-sm' : 'btn btn-primary btn-sm'"
+                   th:text="${e.aprobadoSaberPro} ? 'Desaprobar' : 'Aprobar'"></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

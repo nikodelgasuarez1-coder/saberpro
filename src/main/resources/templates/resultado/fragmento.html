@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Fragmento reutilizable con el detalle del resultado de un estudiante (estilo cyber). -->
+<div th:fragment="detalle(estudiante, resumen)" th:if="${estudiante != null}" th:with="r=${estudiante.resultado}">
+
+  <section class="panel in" style="margin-bottom:20px">
+    <h3 style="font-family:'Orbitron';font-size:20px;margin-bottom:6px" th:text="${estudiante.nombreCompleto}">Nombre</h3>
+    <div style="color:var(--muted);font-size:14px">
+      Registro: <b style="color:var(--cyan)" th:text="${estudiante.numeroRegistro}"></b> &nbsp;·&nbsp;
+      Documento: <span th:text="${estudiante.numeroDocumento ?: '—'}"></span> &nbsp;·&nbsp;
+      Facultad: <span th:text="${estudiante.facultad != null ? estudiante.facultad.nombre : '—'}"></span>
+    </div>
+  </section>
+
+  <div th:if="${r == null}" class="alert alert-info">Este estudiante aún no tiene resultados cargados.</div>
+
+  <div th:if="${r != null and r.anulado}" class="panel in" style="text-align:center;padding:36px">
+    <div style="font-size:54px">🚫</div>
+    <h3 style="font-family:'Orbitron';margin:10px 0 4px">Examen ANULADO</h3>
+    <p style="color:var(--muted)">No se muestran puntajes para este estudiante.</p>
+  </div>
+
+  <div th:if="${r != null and !r.anulado}">
+
+    <!-- ===== CELEBRACIÓN si tiene beneficio ===== -->
+    <section th:if="${resumen != null and resumen.tieneBeneficio}" class="panel in celebra" style="margin-bottom:20px"
+             th:with="b=${resumen.principal}">
+      <span class="confetti" style="left:6%;background:#3effc0;animation-duration:2.6s;animation-delay:0s"></span>
+      <span class="confetti" style="left:16%;background:#00e5ff;animation-duration:3.1s;animation-delay:.4s"></span>
+      <span class="confetti" style="left:27%;background:#ff7a1a;animation-duration:2.3s;animation-delay:.8s"></span>
+      <span class="confetti" style="left:38%;background:#b14dff;animation-duration:3.4s;animation-delay:.2s"></span>
+      <span class="confetti" style="left:49%;background:#3effc0;animation-duration:2.8s;animation-delay:1s"></span>
+      <span class="confetti" style="left:60%;background:#00e5ff;animation-duration:2.5s;animation-delay:.6s"></span>
+      <span class="confetti" style="left:71%;background:#ffb259;animation-duration:3.2s;animation-delay:.3s"></span>
+      <span class="confetti" style="left:82%;background:#b14dff;animation-duration:2.7s;animation-delay:.9s"></span>
+      <span class="confetti" style="left:92%;background:#3effc0;animation-duration:3s;animation-delay:.5s"></span>
+
+      <div class="trophy">🏆</div>
+      <h3 th:text="'¡Felicitaciones! ' + ${b.nombre}">¡Beneficio!</h3>
+      <div class="sub">Por tu excelente desempeño en las pruebas Saber, obtuviste un estímulo de la institución 🎉</div>
+
+      <div class="benef-cards">
+        <div class="benef-card">
+          <div class="k">📝 Nota trabajo de grado</div>
+          <div class="v" th:text="${b.notaGrado}">5.0</div>
+        </div>
+        <div class="benef-card">
+          <div class="k">🎓 Beca derecho de grado</div>
+          <div class="v" th:text="${b.becaPorcentaje} + '%'">100%</div>
+        </div>
+        <div class="benef-card">
+          <div class="k">⏳ Vigencia del incentivo</div>
+          <div class="v sm" th:text="${b.vigencia}">1 año</div>
+        </div>
+      </div>
+      <div class="sub" style="margin-top:14px;font-size:13px"
+           th:text="'Exonera ' + ${b.seminario} + ' o el informe final de trabajo de grado (concepto aprobado).'"></div>
+      <a href="/resolucion-beneficios/ver" class="btn btn-ghost" style="margin-top:14px">📜 Ver resolución completa</a>
+    </section>
+
+    <div class="grid" style="margin-bottom:20px">
+      <!-- puntaje global -->
+      <section class="panel in span4" style="text-align:center">
+        <div class="ph"><span class="dot"></span>Puntaje global</div>
+        <div style="font-family:'Orbitron';font-weight:900;font-size:58px;line-height:1;
+             background:linear-gradient(120deg,#fff,var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent"
+             th:text="${r.puntajeGlobal}">0</div>
+        <div style="margin:10px 0">
+          <span class="bdg bdg-pur" th:text="'Nivel: ' + ${r.nivelDesempeno}">Nivel</span>
+        </div>
+        <div th:if="${r.estado == 'APROBADO'}" class="alert alert-ok" style="justify-content:center">
+          ✅ APROBADO — alcanzó el mínimo de <b th:text="${r.umbralAprobacion}"></b>
+        </div>
+        <div th:if="${r.estado == 'NO_ALCANZO'}" class="alert alert-err" style="justify-content:center">
+          ⚠️ Presentó correctamente, pero quedó por debajo de <b th:text="${r.umbralAprobacion}"></b>
+        </div>
+      </section>
+
+      <!-- extracto por módulos -->
+      <section class="panel in span8">
+        <div class="ph"><span class="dot"></span>Extracto detallado por módulos</div>
+        <div class="ctable-wrap">
+          <table class="ctable">
+            <thead><tr><th>Módulo</th><th>Puntaje</th><th>Nivel</th></tr></thead>
+            <tbody>
+              <tr><td>Comunicación Escrita</td><td><b th:text="${r.comunicacionEscrita}"></b></td>
+                <td><span class="bdg bdg-cyan" th:text="${r.comunicacionEscritaNivelTxt}"></span></td></tr>
+              <tr><td>Razonamiento Cuantitativo</td><td><b th:text="${r.razonamientoCuantitativo}"></b></td>
+                <td><span class="bdg bdg-cyan" th:text="${r.razonamientoCuantitativoNivelTxt}"></span></td></tr>
+              <tr><td>Lectura Crítica</td><td><b th:text="${r.lecturaCritica}"></b></td>
+                <td><span class="bdg bdg-cyan" th:text="${r.lecturaCriticaNivelTxt}"></span></td></tr>
+              <tr><td>Competencias Ciudadanas</td><td><b th:text="${r.competenciasCiudadanas}"></b></td>
+                <td><span class="bdg bdg-cyan" th:text="${r.competenciasCiudadanasNivelTxt}"></span></td></tr>
+              <tr><td>Inglés <span style="color:var(--muted)" th:if="${r.nivelIngles}" th:text="'(' + ${r.nivelIngles} + ')'"></span></td>
+                <td><b th:text="${r.ingles}"></b></td><td><span class="bdg bdg-cyan" th:text="${r.inglesNivelTxt}"></span></td></tr>
+              <tr th:if="${r.formulacionProyectos != null}"><td>Formulación de Proyectos de Ingeniería</td>
+                <td><b th:text="${r.formulacionProyectos}"></b></td><td><span class="bdg bdg-pur" th:text="${r.formulacionProyectosNivelTxt}"></span></td></tr>
+              <tr th:if="${r.pensamientoCientifico != null}"><td>Pensamiento Científico (Mat. y Estadística)</td>
+                <td><b th:text="${r.pensamientoCientifico}"></b></td><td><span class="bdg bdg-pur" th:text="${r.pensamientoCientificoNivelTxt}"></span></td></tr>
+              <tr th:if="${r.disenoSoftware != null}"><td>Diseño de Software</td>
+                <td><b th:text="${r.disenoSoftware}"></b></td><td><span class="bdg bdg-pur" th:text="${r.disenoSoftwareNivelTxt}"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===== Si NO tiene beneficio: cuánto le faltó ===== -->
+    <section th:if="${resumen != null and !resumen.tieneBeneficio and resumen.siguiente != null}"
+             class="panel in falta-box"
+             th:with="sig=${resumen.siguiente}">
+      <div class="ph" style="justify-content:center"><span class="dot" style="background:var(--orange);box-shadow:0 0 10px var(--orange)"></span>Cerca del beneficio</div>
+      <p style="color:var(--muted);margin-bottom:4px">Te faltaron</p>
+      <div class="big" th:text="${resumen.faltan} + ' pts'">0 pts</div>
+      <p style="margin-top:6px">para lograr <b style="color:var(--orange)" th:text="${sig.nombre}"></b>
+        (puntaje ≥ <span th:text="${sig.puntajeMinimo}"></span>)</p>
+      <div class="progressbar">
+        <span th:style="'width:' + (${r.puntajeGlobal} * 100 / ${sig.puntajeMinimo}) + '%'"></span>
+      </div>
+      <small style="color:var(--muted)">¡Vas por buen camino! Sigue preparándote. 💪</small>
+      <div style="margin-top:12px"><a href="/resolucion-beneficios/ver" class="btn btn-ghost">📜 Ver resolución de beneficios</a></div>
+    </section>
+
+    <!-- Si ya tiene el beneficio máximo (no hay siguiente) y tiene beneficio: nada extra -->
+  </div>
+
+</div>
+</body>
+</html>

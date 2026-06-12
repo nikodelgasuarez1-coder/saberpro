@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Revisar Pagos')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('pagos')}"></div>
+  <main class="main">
+    <div class="ptitle"><h2>💳 Revisión de pagos Saber Pro</h2></div>
+
+    <div th:if="${msgOk}" class="alert alert-ok" th:text="${msgOk}"></div>
+    <div class="alert alert-info">Los estudiantes suben su recibo de inscripción. Aquí revisas el comprobante y lo apruebas o rechazas.</div>
+
+    <div th:if="${#lists.isEmpty(pagos)}" class="panel in"><div class="empty"><div class="e">💳</div>Ningún estudiante ha subido su pago todavía.</div></div>
+
+    <section th:if="${not #lists.isEmpty(pagos)}" class="panel in">
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead><tr><th>Estudiante</th><th>Registro</th><th>Recibo</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr th:each="p : ${pagos}">
+              <td th:text="${p.estudiante != null ? p.estudiante.nombreCompleto : '-'}"></td>
+              <td th:text="${p.estudiante != null ? p.estudiante.numeroRegistro : '-'}"></td>
+              <td><a class="lnk" th:href="@{'/uploads/' + ${p.archivo}}" target="_blank" th:text="${p.nombreOriginal ?: 'ver recibo'}">recibo</a></td>
+              <td th:text="${p.fechaSubida != null ? #temporals.format(p.fechaSubida, 'dd/MM/yyyy HH:mm') : '-'}"></td>
+              <td>
+                <span th:if="${p.estado.name() == 'PENDIENTE'}" class="bdg bdg-orange">PENDIENTE</span>
+                <span th:if="${p.estado.name() == 'APROBADO'}" class="bdg bdg-green">APROBADO</span>
+                <span th:if="${p.estado.name() == 'RECHAZADO'}" class="bdg bdg-gray">RECHAZADO</span>
+              </td>
+              <td style="white-space:nowrap">
+                <a th:href="@{/coordinacion/pagos/aprobar/{id}(id=${p.id})}" class="btn btn-primary btn-sm">✓ Aprobar</a>
+                <a th:href="@{/coordinacion/pagos/rechazar/{id}(id=${p.id})}" class="btn btn-danger btn-sm">✕ Rechazar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

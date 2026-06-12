@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Mi Resultado')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('res')}"></div>
+  <main class="main">
+    <div class="ptitle"><h2>📊 Mi Resultado Saber Pro</h2></div>
+
+    <div th:if="${estudiante == null}" class="alert alert-err">Tu usuario no está vinculado a una ficha de estudiante.</div>
+    <div th:replace="~{resultado/fragmento :: detalle(${estudiante}, ${resumen})}"></div>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

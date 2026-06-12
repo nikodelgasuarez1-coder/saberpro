@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Panel Coordinación')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('home')}"></div>
+
+  <main class="main">
+    <div class="header">
+      <div>
+        <div class="eyebrow">Coordinación académica · Saber Pro</div>
+        <h1 class="hi">Centro de control
+          <small>Gestión de estudiantes y resultados</small>
+        </h1>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div class="logochip"><img src="/img/examen-saber-tyt.png" alt="Examen Saber TyT" onerror="this.parentElement.remove()"/></div>
+        <div class="who">
+          <div class="av">🎯</div>
+          <div>
+            <b th:text="${session.usuario.nombre}">Coordinación</b>
+            <span>Coordinación</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <section class="panel span4"><div class="ph"><span class="dot"></span>Estudiantes</div>
+        <div class="stat"><div class="ic c-cyan">👥</div><div class="n c-cyan" th:attr="data-count=${totalEstudiantes}">0</div>
+          <div class="l">Total registrados</div></div>
+        <a href="/coordinacion/estudiantes/listar" style="position:absolute;inset:0"></a></section>
+
+      <section class="panel span4"><div class="ph"><span class="dot"></span>Aprobados</div>
+        <div class="stat"><div class="ic c-green">✅</div><div class="n c-green" th:attr="data-count=${aprobados}">0</div>
+          <div class="l">Habilitados Saber Pro</div></div>
+        <a href="/coordinacion/aprobar" style="position:absolute;inset:0"></a></section>
+
+      <section class="panel span4"><div class="ph"><span class="dot"></span>Con resultado</div>
+        <div class="stat"><div class="ic c-pur">📊</div><div class="n c-pur" th:attr="data-count=${conResultado}">0</div>
+          <div class="l">Resultados cargados</div></div>
+        <a href="/coordinacion/estudiantes/listar" style="position:absolute;inset:0"></a></section>
+
+      <section class="panel span6"><div class="ph"><span class="dot"></span>Datos</div>
+        <div class="launch"><div class="ic">📥</div><div>
+          <h4>Importar / Exportar Excel</h4>
+          <p>Carga el archivo del ICFES o descarga el informe consolidado de resultados.</p>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <a href="/coordinacion/resultados/importar" class="btn btn-primary">⬆ Importar</a>
+            <a href="/coordinacion/resultados/exportar" class="btn btn-ghost">⬇ Exportar</a>
+          </div>
+        </div></div></section>
+
+      <section class="panel span6"><div class="ph"><span class="dot"></span>Gestión</div>
+        <div class="launch"><div class="ic">🗂️</div><div>
+          <h4>Estudiantes y aprobación</h4>
+          <p>Administra el CRUD de alumnos, genera sus accesos y aprueba quién presenta el examen.</p>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <a href="/coordinacion/estudiantes/listar" class="btn btn-ghost">Estudiantes</a>
+            <a href="/coordinacion/aprobar" class="btn btn-ghost">Aprobar</a>
+            <a href="/coordinacion/informe/beneficios" class="btn btn-warn">🎁 Beneficios</a>
+          </div>
+        </div></div></section>
+    </div>
+  </main>
+</div>
+
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

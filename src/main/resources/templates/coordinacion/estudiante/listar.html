@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/cyber :: head('Estudiantes')}"></head>
+<body>
+<div th:replace="~{fragments/cyber :: bg}"></div>
+<div class="shell">
+  <div th:replace="~{fragments/cyber :: sidebar('est')}"></div>
+  <main class="main">
+    <div class="ptitle">
+      <h2>👥 Estudiantes</h2>
+      <div class="actions">
+        <a href="/coordinacion/estudiantes/insertar" class="btn btn-primary">+ Nuevo</a>
+        <a href="/coordinacion/resultados/importar" class="btn btn-ghost">⬆ Importar</a>
+        <a href="/coordinacion/resultados/exportar" class="btn btn-ghost">⬇ Exportar</a>
+      </div>
+    </div>
+
+    <div th:if="${msgOk}" class="alert alert-ok" th:text="${msgOk}"></div>
+    <div th:if="${msgError}" class="alert alert-err" th:text="${msgError}"></div>
+
+    <div th:if="${#lists.isEmpty(estudiantes)}" class="panel in"><div class="empty"><div class="e">👥</div>No hay estudiantes registrados.</div></div>
+
+    <section th:if="${not #lists.isEmpty(estudiantes)}" class="panel in">
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead><tr><th>Registro</th><th>Estudiante</th><th>Facultad</th><th>Puntaje</th><th>Estado</th><th>Aprobado</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr th:each="e : ${estudiantes}" th:with="r=${e.resultado}"
+                th:classappend="${r != null and r.anulado} ? 'row-anulado' :
+                                (${r != null and r.estado == 'NO_ALCANZO'} ? 'row-noalcanzo' :
+                                (${r != null and r.estado == 'APROBADO'} ? 'row-aprobado' : ''))">
+              <td th:text="${e.numeroRegistro}"></td>
+              <td th:text="${e.nombreCompleto}"></td>
+              <td th:text="${e.facultad != null ? e.facultad.nombre : '-'}"></td>
+              <td><b th:text="${r != null and !r.anulado ? r.puntajeGlobal : '—'}"></b></td>
+              <td>
+                <span th:if="${r == null}" class="bdg bdg-dark">Sin resultado</span>
+                <span th:if="${r != null and r.anulado}" class="bdg bdg-gray">ANULADO</span>
+                <span th:if="${r != null and r.estado == 'NO_ALCANZO'}" class="bdg bdg-orange">No alcanzó</span>
+                <span th:if="${r != null and r.estado == 'APROBADO'}" class="bdg bdg-green">Aprobado</span>
+              </td>
+              <td>
+                <span th:if="${e.aprobadoSaberPro}" class="bdg bdg-green">Sí</span>
+                <span th:unless="${e.aprobadoSaberPro}" class="bdg bdg-dark">No</span>
+              </td>
+              <td style="white-space:nowrap">
+                <a th:href="@{/coordinacion/resultados/ver/{id}(id=${e.id})}" class="btn-icon">👁</a>
+                <a th:href="@{/coordinacion/estudiantes/editar/{id}(id=${e.id})}" class="btn-icon warn">✏</a>
+                <a th:href="@{/coordinacion/estudiantes/acceso/{id}(id=${e.id})}" class="btn-icon" title="Generar acceso">🔑</a>
+                <a th:href="@{/coordinacion/estudiantes/eliminar/{id}(id=${e.id})}" class="btn-icon dng"
+                   onclick="return confirm('¿Eliminar este estudiante?')">🗑</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+<div th:replace="~{fragments/cyber :: scripts}"></div>
+</body>
+</html>

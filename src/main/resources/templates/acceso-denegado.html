@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Acceso denegado · Saber Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#04060f;--cyan:#00e5ff;--blue:#2979ff;--purple:#b14dff;--orange:#ff7a1a;
+      --text:#e7f0ff;--muted:#8093b8;--glass:rgba(16,26,52,0.45);--brd:rgba(110,160,255,0.18)}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;
+      display:grid;place-items:center;overflow:hidden;position:relative}
+    #space{position:fixed;inset:0;z-index:0}
+    .bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:radial-gradient(50vw 50vw at 50% 30%,rgba(255,122,26,.16),transparent 60%),
+                 radial-gradient(50vw 50vw at 80% 90%,rgba(177,77,255,.14),transparent 60%)}
+    .card{position:relative;z-index:2;text-align:center;background:var(--glass);border:1px solid var(--brd);
+      border-radius:26px;padding:50px 44px;backdrop-filter:blur(18px);max-width:480px;width:92vw;
+      box-shadow:0 24px 70px rgba(0,0,0,.5);animation:rise .8s both}
+    @keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+    .ico{font-size:74px;animation:float 5s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(255,122,26,.5))}
+    @keyframes float{50%{transform:translateY(-10px)}}
+    h1{font-family:'Orbitron';font-weight:900;font-size:26px;letter-spacing:2px;margin:14px 0 6px;
+      background:linear-gradient(120deg,#fff,var(--orange));-webkit-background-clip:text;background-clip:text;
+      -webkit-text-fill-color:transparent}
+    p{color:var(--muted);font-size:16px;margin-bottom:26px;line-height:1.5}
+    .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-family:'Orbitron';
+      font-weight:700;font-size:13px;letter-spacing:1.5px;padding:13px 22px;border-radius:13px;transition:.3s}
+    .btn-p{color:#001018;background:linear-gradient(135deg,var(--cyan),var(--blue));
+      box-shadow:0 12px 30px rgba(0,229,255,.3)}
+    .btn-p:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(0,229,255,.5)}
+    .btn-g{color:var(--text);background:rgba(255,255,255,.05);border:1px solid var(--brd)}
+    .btn-g:hover{border-color:rgba(255,122,26,.5);color:var(--orange)}
+  </style>
+</head>
+<body>
+<canvas id="space"></canvas>
+<div class="bg-glow"></div>
+
+<div class="card">
+  <div class="ico">⛔</div>
+  <h1>Acceso denegado</h1>
+  <p>Tu rol no tiene autorización para ingresar a esta zona del sistema.</p>
+  <div class="row">
+    <a href="/" class="btn btn-p">⬡ Volver a mi panel</a>
+    <a href="/logout" class="btn btn-g">⏻ Cerrar sesión</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  const cv=document.getElementById('space'),ctx=cv.getContext('2d');
+  let w,h,parts=[],mouse={x:-999,y:-999};
+  function size(){w=cv.width=innerWidth;h=cv.height=innerHeight;}
+  size();addEventListener('resize',size);
+  addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+  const N=Math.min(90,Math.floor(innerWidth/16));
+  const cols=['255,122,26','177,77,255','41,121,255'];
+  for(let i=0;i<N;i++)parts.push({x:Math.random()*w,y:Math.random()*h,
+    vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.7+.6,c:cols[i%cols.length]});
+  function loop(){
+    ctx.clearRect(0,0,w,h);
+    for(const p of parts){
+      const dx=p.x-mouse.x,dy=p.y-mouse.y,d=Math.hypot(dx,dy);
+      if(d<130){p.vx+=dx/d*.25;p.vy+=dy/d*.25;}
+      p.vx*=.96;p.vy*=.96;p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fillStyle='rgba('+p.c+',.85)';ctx.fill();
+    }
+    for(let i=0;i<parts.length;i++)for(let j=i+1;j<parts.length;j++){
+      const a=parts[i],b=parts[j],d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+        ctx.strokeStyle='rgba('+a.c+','+(.13*(1-d/120))+')';ctx.lineWidth=1;ctx.stroke();}
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+</script>
+</body>
+</html>
